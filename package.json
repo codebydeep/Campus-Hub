@@ -1,0 +1,23 @@
+{
+  "name": "campus-hub",
+  "version": "1.0.0",
+  "description": "CampusHub Role-Based College Portal API",
+  "license": "ISC",
+  "author": "Deepansh",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
