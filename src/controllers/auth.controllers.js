@@ -174,15 +174,12 @@ const logoutUser = asyncHandler(async(req, res) => {
 })
 
 const getProfile = asyncHandler(async(req, res) => {
-    const user = await User.find({
-        _id: req.user._id
-    }).select("-password -refreshToken")
 
     res.status(200).json(
         new ApiResponse(
             200,
             "Profile fetched Successfully!",
-            { user }
+            req.user 
         )
     )
 })

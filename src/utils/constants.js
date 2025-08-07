@@ -13,3 +13,11 @@ export const AnnouncementPriorityEnum = {
 }
 
 export const AvailablePriority = Object.values(AnnouncementPriorityEnum)
+
+
+export const ResultStatusEnum = {
+    PASS: "pass",
+    FAIL: "fail"
+}
+
+export const CurrentStatus = Object.values(ResultStatusEnum)

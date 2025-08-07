@@ -1,10 +1,11 @@
-import cookieParser from "cookie-parser"
 import express from "express"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 import healthCheckRoutes from "./routes/healthcheck.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import announcementRoutes from "./routes/announcement.routes.js"
+import resultRoutes from "./routes/result.routes.js"
 
 const app = express()
 
@@ -25,5 +26,6 @@ app.use("/api/v1/healthcheck", healthCheckRoutes)
 
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/announcement", announcementRoutes)
+app.use("/api/v1/results", resultRoutes) 
 
 export default app;

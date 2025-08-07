@@ -7,7 +7,7 @@ const authRoutes = Router()
 authRoutes.post("/", registerUser)
 authRoutes.post("/login", loginUser)
 authRoutes.get("/logout", authMiddleware, logoutUser)
-authRoutes.get("/get-me", authMiddleware, checkAdmin, getProfile)
+authRoutes.get("/get-me", authMiddleware, getProfile)
 
 authRoutes.put("/change/:id", authMiddleware, checkAdmin, changeRole)
 
