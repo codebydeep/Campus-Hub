@@ -6,3 +6,5 @@ function asyncHandler(requestHandler){
         })
     }
 }
+
+export default asyncHandler

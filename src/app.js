@@ -3,6 +3,7 @@ import express from "express"
 import cors from "cors"
 
 import healthCheckRoutes from "./routes/healthcheck.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 
 const app = express()
 
@@ -19,6 +20,8 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser())
 
-app.use("/api/v1/health", healthCheckRoutes)
+app.use("/api/v1/healthcheck", healthCheckRoutes)
 
-export default app
+app.use("/api/v1/auth", authRoutes)
+
+export default app;
