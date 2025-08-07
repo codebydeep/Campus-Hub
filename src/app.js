@@ -4,6 +4,7 @@ import cors from "cors"
 
 import healthCheckRoutes from "./routes/healthcheck.routes.js"
 import authRoutes from "./routes/auth.routes.js"
+import announcementRoutes from "./routes/announcement.routes.js"
 
 const app = express()
 
@@ -23,5 +24,6 @@ app.use(cookieParser())
 app.use("/api/v1/healthcheck", healthCheckRoutes)
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/announcement", announcementRoutes)
 
 export default app;
