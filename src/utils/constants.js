@@ -5,3 +5,11 @@ export const UserRolesEnum = {
 }
 
 export const AvailableUserRoles = Object.values(UserRolesEnum)
+
+
+export const AnnouncementPriorityEnum = {
+    NORMAL: "normal",
+    HIGH: "high"
+}
+
+export const AvailablePriority = Object.values(AnnouncementPriorityEnum)

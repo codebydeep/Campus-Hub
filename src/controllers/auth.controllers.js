@@ -187,9 +187,28 @@ const getProfile = asyncHandler(async(req, res) => {
     )
 })
 
+const changeRole = asyncHandler(async(req, res) => {
+    const { id } = req.params
+
+    const user = await User.findById(id).select("-password -refreshToken")
+
+    user.role = "faculty"
+
+    await user.save({validateBeforeSave: true})
+
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            "User role changed to",
+            { user }
+        )
+    )
+})
+
 export { 
     registerUser, 
     loginUser, 
     logoutUser, 
-    getProfile 
+    getProfile,
+    changeRole 
 }
