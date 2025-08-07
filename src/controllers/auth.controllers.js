@@ -39,18 +39,30 @@ const registerUser = asyncHandler(async(req, res) => {
         password
     })
 
+
+    const createdUser = await User.findById(user._id).select("-password -refreshToken")
+
     const accessToken = user.generateAccessToken()
+
     const refreshToken = user.generateRefreshToken()
+
+    user.refreshToken = refreshToken
+
+    await user.save({
+        validateBeforeSave: true
+    })
 
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: "Strict",
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 1000 * 60 * 15
     })
 
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 1000 * 60 * 15
     })
 
@@ -58,7 +70,7 @@ const registerUser = asyncHandler(async(req, res) => {
         new ApiResponse(
             201,
             "User Created Successfully!",
-            { user }
+            { createdUser }
         )
     )
 })
@@ -90,6 +102,8 @@ const loginUser = asyncHandler(async(req, res) => {
             )
         )
     }
+
+    const logUser = await User.findById(user._id).select("-password -refreshToken")
 
     const isMatched = await user.isPasswordMatched(password)
 
@@ -123,12 +137,24 @@ const loginUser = asyncHandler(async(req, res) => {
         new ApiResponse(
             200,
             "User LoggedIn Successfully!",
-            { user }
+            { logUser }
         )
     )
 })
 
 const logoutUser = asyncHandler(async(req, res) => {
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken: 1,
+            }
+        },
+        {
+            new: true,
+        }
+    )
+
     res.clearCookie("accessToken", {
         httpOnly: true,
         sameSite: "strict",
@@ -150,7 +176,7 @@ const logoutUser = asyncHandler(async(req, res) => {
 const getProfile = asyncHandler(async(req, res) => {
     const user = await User.find({
         _id: req.user._id
-    })
+    }).select("-password -refreshToken")
 
     res.status(200).json(
         new ApiResponse(
@@ -161,4 +187,9 @@ const getProfile = asyncHandler(async(req, res) => {
     )
 })
 
-export { registerUser, loginUser, logoutUser, getProfile }
+export { 
+    registerUser, 
+    loginUser, 
+    logoutUser, 
+    getProfile 
+}
