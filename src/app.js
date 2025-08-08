@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js"
 import announcementRoutes from "./routes/announcement.routes.js"
 import resultRoutes from "./routes/result.routes.js"
 import coursesRoutes from "./routes/courses.routes.js"
+import materialRoutes from "./routes/materials.routes.js"
 
 const app = express()
 
@@ -29,5 +30,6 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/announcement", announcementRoutes)
 app.use("/api/v1/results", resultRoutes) 
 app.use("/api/v1/courses", coursesRoutes)
+app.use("/api/v1/materials", materialRoutes)
 
 export default app;

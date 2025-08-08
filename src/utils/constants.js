@@ -21,3 +21,13 @@ export const ResultStatusEnum = {
 }
 
 export const CurrentStatus = Object.values(ResultStatusEnum)
+
+
+export const AttachmentsTypeEnum = {
+    PDF: "pdf",
+    LINK: "link",
+    ASSIGNMENT: "assignment",
+    NOTES: "notes"
+}
+
+export const Attachments = Object.values(AttachmentsTypeEnum)

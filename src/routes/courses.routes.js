@@ -8,4 +8,4 @@ const coursesRoutes = Router()
 coursesRoutes.post("/", authMiddleware, checkAdmin, postCourses)
 coursesRoutes.get("/", authMiddleware, getCourses)
 
-export default coursesRoutes
+export default coursesRoutes;
