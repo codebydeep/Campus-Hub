@@ -66,7 +66,7 @@ const postResult = asyncHandler(async(req, res) => {
 const getResult = asyncHandler(async(req, res) => {
     const { studentId } = req.params
 
-    const studentResult = await Result.findOne({
+    const studentResult = await Result.find({
         student: studentId
     })
 
