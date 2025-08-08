@@ -22,6 +22,16 @@ const postMaterial = asyncHandler(async(req, res) => {
             )
         )
     }
+
+    if(req.user.role !== "faculty"){
+        return res.status(400).json(
+            new ApiError(
+                400,
+                false,
+                ["Access denied! - Students or Admin not allowed!"]
+            )
+        )
+    }
     
     const course = await Course.findById(courseId);
 
@@ -56,7 +66,7 @@ const postMaterial = asyncHandler(async(req, res) => {
 const getMaterial = asyncHandler(async(req, res) => {
     const { courseId } = req.params
 
-    if(req.user.role !== "student"){
+    if(req.user.role !== "faculty" || req.user.role !== "student"){
         return res.status(400).json(
             new ApiError(
                 400,
