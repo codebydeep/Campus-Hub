@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { authMiddleware, checkAdmin } from "../middlewares/auth.middleware.js";
 import { postAnnouncement, getAllAnnouncements } from "../controllers/announcement.controllers.js";
 
