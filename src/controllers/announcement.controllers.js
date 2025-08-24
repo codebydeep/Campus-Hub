@@ -11,12 +11,9 @@ const postAnnouncement = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!title || !content){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["All the details are required to make an announcement."]
-            )
+        throw new ApiError(
+            400,
+            "All the details are required to make an announcement."
         )
     }
 
@@ -26,15 +23,12 @@ const postAnnouncement = asyncHandler(async(req, res) => {
     })
 
     if(existingAnnouncement){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Announcement already exists"]
-            )
+        throw new ApiError(
+            400,
+            "Announcement already exists"
         )
     }
-
+    
     const announcement = await Announcement.create({
         title,
         content,
@@ -60,16 +54,6 @@ const postAnnouncement = asyncHandler(async(req, res) => {
 
 const getAllAnnouncements = asyncHandler(async(req, res) =>{
     const allAnouncements = await Announcement.find({})
-
-    // if(!allAnouncements){
-    //     return res.status(409).json(
-    //         new ApiError(
-    //             409,
-    //             false,
-    //             ["No Announcemensts found!"]
-    //         )
-    //     )
-    // }
 
     res.status(200).json(
         new ApiResponse(

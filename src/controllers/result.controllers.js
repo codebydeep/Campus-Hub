@@ -15,12 +15,9 @@ const postResult = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!student || !year || !semester || !gpa || !grade){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["All the details are required to publish result!"]
-            )
+        throw new ApiError(
+            400,
+            "All the details are required to publish result!"
         )
     }
 
@@ -33,12 +30,9 @@ const postResult = asyncHandler(async(req, res) => {
     );
         
     if(existingResult){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Result already announced! for a student"]
-            )
+        throw new ApiError(
+            400,
+            "Result already announced! for a student"
         )
     }
 
@@ -71,14 +65,12 @@ const getResult = asyncHandler(async(req, res) => {
     })
 
     if(!studentResult){
-        return res.status(409).json(
-            new ApiError(
-                409,
-                false,
-                ["No Result found!"]
-            )
+        throw new ApiError(
+            409,
+            "No Result found!"
         )
     }
+    
 
     res.status(200).json(
         new ApiResponse(

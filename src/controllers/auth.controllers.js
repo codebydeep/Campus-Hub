@@ -12,27 +12,21 @@ const registerUser = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!fullname || !email || !password){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["All the details! are required."]
-            )
+        throw new ApiError(
+            400,
+            "All the details! are required."
         )
     }
-
+        
     const existingUser = await User.findOne({email})
 
     if(existingUser){
-        return res.status(403).json(
-            new ApiError(
-                403,
-                false,
-                ["User already exists!"]
-            )
+        throw new ApiError(
+            403,
+            "User already exists!"
         )
     }
-
+        
     const user = await User.create({
         fullname,
         email,
@@ -43,7 +37,6 @@ const registerUser = asyncHandler(async(req, res) => {
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
     const accessToken = user.generateAccessToken()
-
     const refreshToken = user.generateRefreshToken()
 
     user.refreshToken = refreshToken
@@ -56,14 +49,14 @@ const registerUser = asyncHandler(async(req, res) => {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 1000 * 60 * 15
+        maxAge: 1000 * 60 * 15
     })
 
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 1000 * 60 * 15
+        maxAge: 1000 * 60 * 60 * 24
     })
 
     res.status(201).json(
@@ -82,24 +75,18 @@ const loginUser = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!email || !password){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Both the details are required!"]
-            )
+        throw new ApiError(
+            400,
+            "Both the details are required!"
         )
     }
-
+        
     const user = await User.findOne({email})
 
     if(!user){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["No User found || Please create account or register!"]
-            )
+        throw new ApiError(
+            400,
+            "No User found || Please create account or register!"
         )
     }
 
@@ -108,17 +95,13 @@ const loginUser = asyncHandler(async(req, res) => {
     const isMatched = await user.isPasswordMatched(password)
 
     if(!isMatched){
-        return res.status(409).json(
-            new ApiError(
-                409,
-                false,
-                ["Invalid credentials~"]
-            )
+        throw new ApiError(
+            409,
+            "Invalid credentials~"
         )
     }
-
+        
     const accessToken = await user.generateAccessToken()
-
     const refreshToken = await user.generateRefreshToken()
 
     res.cookie("accessToken", accessToken, {
@@ -130,7 +113,7 @@ const loginUser = asyncHandler(async(req, res) => {
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
-        maxAge: 60 * 1000 * 60 * 15
+        maxAge: 1000 * 60 * 60 * 24
     })
 
     res.status(200).json(
@@ -191,6 +174,8 @@ const changeRole = asyncHandler(async(req, res) => {
     const user = await User.findByIdAndUpdate(id, {
         role: newRole
     })
+
+    await user.save();
 
     res.status(200).json(
         new ApiResponse(

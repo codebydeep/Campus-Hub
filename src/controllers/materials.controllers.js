@@ -14,15 +14,12 @@ const postMaterial = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!title){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Title & Attachments must be provided!"]
-            )
+        throw new ApiError(
+            400,
+            "Title & Attachments must be provided!"
         )
     }
-
+        
     if(req.user.role !== "faculty"){
         return res.status(400).json(
             new ApiError(
@@ -36,13 +33,10 @@ const postMaterial = asyncHandler(async(req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-        return res.status(404).json(
-            new ApiError(
-                404,
-                false,
-                ["Course not found!"]
-            )
-        );
+        throw new ApiError(
+            404,
+            "Course not found!"
+        )
     }
         
     const material = await Material.create({
@@ -67,26 +61,20 @@ const getMaterial = asyncHandler(async(req, res) => {
     const { courseId } = req.params
 
     if(req.user.role !== "faculty" || req.user.role !== "student"){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Access denied! - User not allowed!"]
-            )
+        throw new ApiError(
+            400,
+            "Access denied! - User not allowed!"
         )
     }
-
+        
     const materials = await Material.find({
         course: courseId
     })
 
     if(!materials){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["No study materials found for Courses!"]
-            )
+        throw new ApiError(
+            400,
+            "No study materials found for Courses!"
         )
     }
 

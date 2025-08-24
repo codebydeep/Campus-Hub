@@ -10,8 +10,7 @@ const authMiddleware = asyncHandler(async(req, res, next) => {
     if(!token){
         throw new ApiError(
             400,
-            false,
-            ["No token provided~"]
+            "No token provided~"
         )
     }
 
@@ -20,8 +19,7 @@ const authMiddleware = asyncHandler(async(req, res, next) => {
     if(!decoded){
         throw new ApiError(
             400,
-            false,
-            ["User Unauthorized!"]
+            "User Unauthorized!"
         )
     }
 
@@ -30,8 +28,7 @@ const authMiddleware = asyncHandler(async(req, res, next) => {
     if(!user){
         throw new ApiError(
             400,
-            false,
-            ["No user found with token||cookie"]
+            "No user found with token||cookie"
         )
     }
 
@@ -43,8 +40,7 @@ const authMiddleware = asyncHandler(async(req, res, next) => {
 const checkAdmin = asyncHandler(async(req, res, next) => {
     if(req.user.role !== "admin") throw new ApiError(
         400,
-        false,
-        ["Access denied || Admins only"]
+        "Access denied || Admins only"
     )
 
     next();

@@ -16,8 +16,7 @@ const checkRoleForResult = asyncHandler(async(req, res, next) => {
 
     throw new ApiError(
         403,
-        false,
-        ["Access denied: Not allowed to see others Result!"]
+        "Access denied: Not allowed to see others Result!"
     )  
 }) 
 

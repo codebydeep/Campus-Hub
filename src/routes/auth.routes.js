@@ -4,11 +4,11 @@ import { authMiddleware, checkAdmin } from "../middlewares/auth.middleware.js";
 
 const authRoutes = Router()
 
-authRoutes.post("/", registerUser)
+authRoutes.post("/register", registerUser)
 authRoutes.post("/login", loginUser)
 authRoutes.get("/logout", authMiddleware, logoutUser)
 authRoutes.get("/get-me", authMiddleware, getProfile)
 
-authRoutes.put("/change/:id", authMiddleware, checkAdmin, changeRole)
+authRoutes.put("/change-role/:id", authMiddleware, checkAdmin, changeRole)
 
 export default authRoutes;

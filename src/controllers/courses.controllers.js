@@ -11,14 +11,12 @@ const postCourses = asyncHandler(async(req, res) => {
     } = req.body
 
     if(!title || !description){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["Title & Description required!"]
-            )
+        throw new ApiError(
+            400,
+            "Title & Description required!"
         )
     }
+    
 
     if(req.user.role === "student" || req.user.role === "faculty"){
         return res.status(400).json(
@@ -36,17 +34,13 @@ const postCourses = asyncHandler(async(req, res) => {
     })
 
     if(existingCourse){
-        return res.status(403).json(
-            new ApiError(
-                403,
-                false,
-                ["Course already exists!"]
-            )
+        throw new ApiError(
+            403,
+            "Course already exists!"
         )
     }
-
+    
     const getInstructor = await User.findById(req.user._id).select("fullname")
-
 
     const course = await Course.create({
         title,
@@ -67,15 +61,12 @@ const getCourses = asyncHandler(async(req, res) => {
     const courses = await Course.find({})
 
     if(!courses){
-        return res.status(400).json(
-            new ApiError(
-                400,
-                false,
-                ["No Courses are found!"]
-            )
+        throw new ApiError(
+            400,
+            "No Courses are found!"
         )
     }
-
+        
     res.status(200).json(
         new ApiResponse(
             200,
